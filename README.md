@@ -18,6 +18,17 @@ See the [Dockerfile](./Dockerfile) for all options.
 
 **NB: current known issue where build args don't override values I set previousy in the build, working on this, but please set any vars using ENV line only for now.**
 
+## Example
+
+```Dockerfile
+# AnimeAnything v3, from HuggingFace "diffusers" branch/revision (an fp16 model)
+MODEL_ID="Linaqruf/anything-v3.0"
+MODEL_PRECISION="fp16"
+MODEL_REVISION="diffusers"
+# Download pre-built optimized image from our own S3-storage in default location
+MODEL_URL="s3://"
+```
+
 ## Banana Info
 
 ### Usage
