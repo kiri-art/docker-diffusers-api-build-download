@@ -20,17 +20,48 @@ See the [Dockerfile](./Dockerfile) for all options.
 
 ## Banana Info
 
+### Usage
+
+```js
+const out = await banana.run(apiKey, modelKey, { "modelInputs": modelInputs, "callInputs": callInputs });
+```
+
+NB: if you're coming from another banana starter repo, note that we
+explicitly name `modelInputs` above, and send a bigger object (with
+`modelInputs` and `callInputs` keys) for the banana-sdk's
+"modelInputs" argument.
+
+If provided, `init_image` and `mask_image` should be base64 encoded.
+
+### Optimization
+
 We no longer support Banana's optimization system.  We do
-however provide an alternative that offers the same
-performance, but requires S3-compatible storage (see the
-forums for more info XXX link).
+however provide an alternative that offers even better
+performance, but requires either a pre-built image or
+S3-compatible storage (see
+[this post](https://forums.kiri.art/t/our-own-optimization-faster-model-init/98)
+for more info).
 
-Build Timing:
+Build timing:
 
-  * Build - takes about 8m.
-  * Optimization - takes much longer and of course will fail in the end - we don't use it - maybe we'll get a way to opt out of opimitzaiton in the future.
+  * Primary build - takes about 8m.
+  * Optimization step - takes much longer and of course will fail in the end - we don't use it - maybe we'll get a way to opt out of optimization in the future.
 
-Loaded from disk in 406 ms, to gpu in 995 ms
+Cold boot timing:
 
-Optimization: 2.3-6.4s init time (usually around 3.0s)
-Our method: 2.0s x2, 2.1s, 2.2s,2.3s,2.5s
+* Banana's optimization: 2.3-6.4s init time (usually around 3.0s)
+* Our method: 2.0-2.5s init time (usually around 2.1s)
+
+### Testing
+
+```bash
+# Run against deployed banana image (Nvidia A100)
+$ export BANANA_API_KEY=XXX
+$ BANANA_MODEL_KEY=XXX python3 test.py --banana txt2img
+Running test: txt2img
+Request took 19.4s (init: 2.5s, inference: 3.5s)
+Saved /home/dragon/www/banana/banana-sd-base/tests/output/txt2img.png
+
+# Note that 2nd runs are much faster (no init AND faster inference)
+Request took 3.0s (inference: 2.1s)
+```
