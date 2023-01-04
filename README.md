@@ -16,6 +16,8 @@ Simply set the appropriate build-vars either in e.g. Banana's dashboard, or insi
 
 See the [Dockerfile](./Dockerfile) for all options.
 
+**NB: current known issue where build args don't override values I set previousy in the build, working on this, but please set any vars using ENV line only for now.**
+
 ## Banana Info
 
 We no longer support Banana's optimization system.  We do
